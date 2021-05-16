@@ -1,18 +1,62 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import {connect} from 'react-redux';
 import {useStyles} from './styles';
 
-const msg = [0,1,2,3,4,5,6,7,8,9,10,11];
+import io from 'socket.io-client';
 
-const Chat = () => {
+let socket;
+
+   var connectionOptions =  {
+      "force new connection" : true,
+      "reconnectionAttempts": "Infinity", 
+      "timeout" : 10000,                  
+      "transports" : ["websocket"]
+   };
+
+const Chat = ({user,messageForSend}) => {
+      
+   const [messages, setMessages] = useState([]);
    const styles = useStyles();
+   const ENDPOINT = 'localhost:3333';
    
+   useEffect(() => {
+
+      socket = io(ENDPOINT, connectionOptions);
+      socket.on('previousMessages', (messages) => {
+         if (messages.length) {
+            setMessages(messages);
+         }
+      } )
+
+      return () => {
+         socket.emit('encerrar');
+         socket.off();
+      }
+   },[ENDPOINT])
+
+   useEffect(() => {
+      socket.on('receivedMessage', (message) => {
+         setMessages([...messages,message])
+         console.log("message Received")
+         console.log(message)
+      })
+   },[messages])
+
+   useEffect(() => {
+      sedMessageChat();
+   }, [messageForSend])
+
+   const sedMessageChat = () => {
+      if (messageForSend !== '')
+      socket.emit('sendMessage', {nickName: user.nickName, room: 'sala 1',msg: messageForSend})
+   }
+
   return (
    <div className={styles.chat}>
-      {msg.map((mg, index) => (
+      {messages.map((user, index) => (
       <section key={index}>
-         <strong>Caio Cesar: </strong>
-         <p>Hello world my friend</p>
+         <strong>{user.nickName}: </strong>
+         <p>{user.msg}</p>
          <label style={{fontSize: 11}}>
             enviado: <strong>15/05/2021</strong>
          </label>
@@ -22,4 +66,4 @@ const Chat = () => {
   )
 }
 
-export default Chat;
+export default connect(state => ({user: state}))(Chat);

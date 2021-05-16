@@ -25,7 +25,7 @@ const InitialRegister = ({user, dispatch}) => {
 
   return (
     <div>
-      <Dialog open={user.ativo} onClose={ () => handleClose} disableBackdropClick aria-labelledby="form-dialog-title" >
+      <Dialog open={user.ativo}  disableBackdropClick aria-labelledby="form-dialog-title" >
         <DialogTitle id="form-dialog-title">Entrar no Chat</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -45,7 +45,7 @@ const InitialRegister = ({user, dispatch}) => {
         <DialogActions>
           {
             nick.length >= 3 &&
-              <Button onClick={handleClose} color="primary">
+              <Button onClick={ () => handleClose()} color="primary">
                 SALVAR
               </Button>
           }

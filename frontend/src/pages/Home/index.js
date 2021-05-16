@@ -1,5 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import NavBar from '../../components/NavBar';
 import CardRoom from '../../components/CardRoom';
@@ -10,8 +9,8 @@ const Home = () => {
     <Container maxWidth="xl" disableGutters>
       <NavBar />
       <Container maxWidth="md">
-          <CardRoom />
-          <CardRoom />
+          <CardRoom name="sala 1"/>
+          <CardRoom  name="sala 2" />
       </Container>
       <InitialRegister />
     </Container>

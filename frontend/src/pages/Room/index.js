@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -16,9 +16,15 @@ import OnlinePersons from "../../components/OnlinePersons";
 import FinalyRegister from "../../components/FinalyRegister";
 
 const Room = ({user}) => {
-  console.log(user)
   const history = useHistory();
   const styles = useStyles();
+  const [message, setMessage] = useState('');
+  const [send, setSend] = useState('');
+
+  const sendMessage = () => {
+    setSend(message);
+    setMessage('');
+  }
 
   return (
     <Container maxWidth="lg">
@@ -41,7 +47,7 @@ const Room = ({user}) => {
       </div>
       <Card className={styles.root}>
         <Container className={styles.containerChat} disableGutters>
-            <Chat />
+            <Chat messageForSend={send} />
           <Divider orientation="vertical" />
             <OnlinePersons />
         </Container>
@@ -53,6 +59,9 @@ const Room = ({user}) => {
             label="Insira sua mensagem"
             defaultValue=""
             variant="outlined"
+            value={message}
+            onChange={e => setMessage(e.target.value) }
+            onKeyPress={event => event.key === 'Enter' ? sendMessage() : null }
           />
           <Button className={styles.buttomSend} variant="contained">
             Send

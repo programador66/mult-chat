@@ -1,19 +1,38 @@
 import express from 'express';
-import routes from './routes';
-import cors from 'cors';
 import http from 'http';
+import { Socket } from 'socket.io';
+import cors from 'cors';
+import routes from './routes';
 
 const socketio = require('socket.io');
 
+let messages: any = [];
+
 const app = express();
+app.use(cors());
+
 const server = http.createServer(app);
+
 const io = socketio(server);
 
-app.use(cors());
+io.on('connection', (socket: Socket) => {
+
+   console.log(' estabelecendo nova conexão');
+      
+    socket.emit('previousMessages', messages);
+
+   socket.on('sendMessage', (data) => {
+      console.log(data);
+      messages.push(data);
+      io.emit('receivedMessage', data);
+   })
+
+   socket.on('encerrar', () => console.log('conexão encerrada!'))
+})
 
 app.use(express.json());
 app.use(routes);
 
-app.listen(3333, () => {
+server.listen(3333, () => {
    console.log('🚀🚀🚀🚀🚀🚀🚀🚀 server run on port 3333');
 })

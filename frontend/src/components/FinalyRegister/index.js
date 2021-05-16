@@ -15,7 +15,7 @@ const FinalyRegister = ({user, dispatch}) => {
 
   const activeInativeModal = (nome,email,data_nascimento) => {
       return {
-        type: 'SET_USER',
+        type: 'SET_USERFINAL',
         finalyRegister: false
       }
   }

@@ -9,7 +9,7 @@ const msg = [0,1,2];
 
 const activeInativeModal = () => {
    return {
-     type: 'SET_USER',
+     type: 'SET_USERFINAL',
      finalyRegister: true
    }
 }

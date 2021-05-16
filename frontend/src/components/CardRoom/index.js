@@ -7,20 +7,33 @@ import Typography from "@material-ui/core/Typography";
 import { useHistory } from 'react-router-dom';
 
 import { useStyles } from "./styles";
+import { connect } from "react-redux";
 
-const CardRoom = () => {
+const setRoom = (room) => {
+  return {
+    type: 'SET_ROOM',
+    room: room
+  }
+}
+
+const CardRoom = ({name,user,dispatch}) => {
   const history = useHistory();
   const classes = useStyles();
+
+  const goToChat = async (room) => {
+    await dispatch(setRoom(room));
+    history.push("/room");
+  }
 
   return (
     <Card className={classes.root}>
       <CardContent>
         <Typography variant="h5" component="h2" className={classes.title}>
-          Sala 1
+          {name}
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="contained" className={classes.buttoms} onClick={() => history.push("/room")}>
+        <Button size="small" variant="contained" className={classes.buttoms} onClick={() => goToChat(name)}>
           Entrar
         </Button>
       </CardActions>
@@ -28,4 +41,4 @@ const CardRoom = () => {
   );
 };
 
-export default CardRoom;
+export default connect(state => ({user: state}))(CardRoom);
