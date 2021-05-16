@@ -1,5 +1,7 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+import { connect } from 'react-redux';
+
 import Container from "@material-ui/core/Container";
 import Card from "@material-ui/core/Card";
 import TextField from "@material-ui/core/TextField";
@@ -11,10 +13,10 @@ import { IoMdSend } from "react-icons/io";
 
 import Chat from '../../components/Chat';
 import OnlinePersons from "../../components/OnlinePersons";
+import FinalyRegister from "../../components/FinalyRegister";
 
-const msg = [0,1,2,3,4,5,6,7,8,9,10,11];
-
-const Room = () => {
+const Room = ({user}) => {
+  console.log(user)
   const history = useHistory();
   const styles = useStyles();
 
@@ -23,7 +25,7 @@ const Room = () => {
       <Container className={styles.header} disableGutters>
         <section className={styles.logo}>
           <img src={logo} width={115} />
-          <strong>Bem vindo ao Web Chat, Caio César</strong>
+          <strong>Bem vindo ao Web Chat, {user.nickName}</strong>
         </section>
 
         <Button
@@ -51,7 +53,6 @@ const Room = () => {
             label="Insira sua mensagem"
             defaultValue=""
             variant="outlined"
-            color="#0e314a"
           />
           <Button className={styles.buttomSend} variant="contained">
             Send
@@ -59,8 +60,13 @@ const Room = () => {
           </Button>
         </Container>
       </Card>
+      {
+        !user.FinalyRegister && 
+        <FinalyRegister />
+      }
+      
     </Container>
   );
 };
 
-export default Room;
+export default connect(state => ({user: state}))(Room);

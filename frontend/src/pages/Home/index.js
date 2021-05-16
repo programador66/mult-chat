@@ -1,9 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Container from '@material-ui/core/Container';
 import NavBar from '../../components/NavBar';
 import CardRoom from '../../components/CardRoom';
-
-// import { Container } from './styles';
+import InitialRegister from '../../components/InitialRegister';
 
 const Home = () => {
   return (
@@ -13,6 +13,7 @@ const Home = () => {
           <CardRoom />
           <CardRoom />
       </Container>
+      <InitialRegister />
     </Container>
   )
 }
