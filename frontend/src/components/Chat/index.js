@@ -24,7 +24,8 @@ const Chat = ({user,messageForSend}) => {
       socket = io(ENDPOINT, connectionOptions);
       socket.on('previousMessages', (messages) => {
          if (messages.length) {
-            setMessages(messages);
+            const messagesFiltradas = messages.filter(message => user.room == message.room);
+            setMessages(messagesFiltradas);
          }
       } )
 
@@ -35,7 +36,8 @@ const Chat = ({user,messageForSend}) => {
    },[ENDPOINT])
 
    useEffect(() => {
-      socket.on('receivedMessage', (message) => {
+      console.log(user.room)
+      socket.on(user.room, (message) => {
          setMessages([...messages,message])
          console.log("message Received")
          console.log(message)
@@ -48,7 +50,7 @@ const Chat = ({user,messageForSend}) => {
 
    const sedMessageChat = () => {
       if (messageForSend !== '')
-      socket.emit('sendMessage', {nickName: user.nickName, room: 'sala 1',msg: messageForSend})
+      socket.emit('sendMessage', {nickName: user.nickName, room: user.room,msg: messageForSend})
    }
 
   return (

@@ -43,7 +43,7 @@ const Room = ({user}) => {
         </Button>
       </Container>
       <div className={styles.titleRoom}>
-        <strong>SALA 1</strong>
+        <strong>{user.room}</strong>
       </div>
       <Card className={styles.root}>
         <Container className={styles.containerChat} disableGutters>

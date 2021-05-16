@@ -18,13 +18,13 @@ const io = socketio(server);
 io.on('connection', (socket: Socket) => {
 
    console.log(' estabelecendo nova conexão');
-      
+    
     socket.emit('previousMessages', messages);
 
    socket.on('sendMessage', (data) => {
       console.log(data);
       messages.push(data);
-      io.emit('receivedMessage', data);
+      io.emit(data.room, data);
    })
 
    socket.on('encerrar', () => console.log('conexão encerrada!'))
