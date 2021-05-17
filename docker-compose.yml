@@ -1,0 +1,51 @@
+version: '3.3'
+services: 
+
+  backend:
+    build:
+      dockerfile: ./backend/deploy/Dockerfile
+      context: ./
+    image:  backend/multchat
+    container_name: api-multchat
+    command: bash -c "npm i && npm run start"
+    user: root
+    environment:
+      - TZ=$TZ
+      - NODE_ENV=development
+    working_dir: /app
+    restart: unless-stopped
+    ports: 
+      - 3333:3333
+    volumes: 
+      - ./backend:/app
+    depends_on:
+      - mongodb
+
+  frontend:
+    build:
+        dockerfile: ./frontend/deploy/Dockerfile
+        context: ./
+    image:  frontend/multchat
+    container_name: app-multchat
+    command: bash -c "npm i && npm run start"
+    user: root
+    environment:
+        - TZ=$TZ
+        - NODE_ENV=development
+    working_dir: /app
+    restart: unless-stopped
+    ports: 
+        - 3000:3000
+    volumes: 
+        - ./frontend:/app
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      TZ: $TZ
+    ports: 
+      - 27017:27017
+    volumes:
+      - ./mongo/data:/data/db
