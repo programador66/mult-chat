@@ -22,14 +22,14 @@ class UserController {
          const {nickName,name, email, data_aniversario} = request.body;
          
          UserValidate({nickName,name,email, data_aniversario});
-         const existingUser = await User.find({email: email});
+         const existingUser = await User.find({email: email, nickName});
          
          if (existingUser.length)
             throw new Error('Usuário ja existente!')
 
          const user = await User.create({nickName,name,email,data_aniversario});
          
-         return response.status(201).json({user});    
+         return response.status(201).json({success: true, user});    
          
       } catch (error) {
          return response.status(500).json({

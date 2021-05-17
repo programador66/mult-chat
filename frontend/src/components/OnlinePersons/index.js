@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
 import { IoMdPerson } from "react-icons/io";
 import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import {useStyles} from './styles';
-
-const msg = [0,1,2];
+import api from '../../services/api';
 
 const activeInativeModal = () => {
    return {
@@ -15,30 +14,72 @@ const activeInativeModal = () => {
 }
 
 const OnlinePersons = ({user,dispatch}) => {
-
   const styles = useStyles();
+  const [usersBd, setUsersBd] = useState([]); 
+
+  useEffect(() => {
+     api.getAllUsers().then(response => {
+        const users = response.data.data;
+        setUsersBd(users);
+     }).catch(e => console.log(e.response));
+  },[])
+
+  const verifyIfUserExists = () => {
+     const verify = usersBd.filter(bd => bd.nickName === user.nickName );
+     
+     if (verify.length) {
+      const userExisting = {
+         type: 'SET_USERFINAL',
+         finalyRegister: false,
+         nome: verify[0].name,
+         email:verify[0].email,
+         data_nascimento: verify[0].data_aniversario
+       }
+       dispatch(userExisting);
+     } else {
+      dispatch(activeInativeModal())
+     }
+  }
   return (
       <div className={styles.pessoasOnline}>
-         <strong className={styles.header}> 2 pessoas online</strong>
+         <strong className={styles.header}> Usuários Total do chat {usersBd.length}</strong>
          <div className={styles.pessoas}>
          {
-            msg.map(t => (
-               <div key={t}>
+            usersBd.map((user,index) => (
+               <div key={index}>
                   <IoMdPerson size={26} variant="outlined" />
-                  <strong> Caio César</strong>
+                  <strong> {user.nickName}</strong>
                </div>
                )
             )
          }
          </div>
          <Divider orientation="horizontal" style={{marginTop: 30}} />
-         <Button 
-            variant="contained" 
-            className={styles.buttoms}
-            onClick={() => dispatch(activeInativeModal())}
-         >
-            Entrar no Chat
-         </Button>
+         {
+            user.email == "" ? 
+            <Button 
+               variant="contained" 
+               className={styles.buttoms}
+               onClick={() => verifyIfUserExists()}
+            >
+               Entrar no Chat
+            </Button>
+            : 
+            <Button 
+               variant="contained" 
+               className={styles.buttomSair}
+               onClick={() => dispatch({
+                  type: 'SET_USERFINAL',
+                  finalyRegister: false,
+                  nome:"",
+                  email:"",
+                  data_nascimento:""
+                })}
+            >
+               sair Chat
+            </Button>
+         }
+        
    </div>
   );
 }

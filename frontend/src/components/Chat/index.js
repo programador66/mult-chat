@@ -24,7 +24,7 @@ const Chat = ({user,messageForSend}) => {
       socket = io(ENDPOINT, connectionOptions);
       socket.on('previousMessages', (messages) => {
          if (messages.length) {
-            const messagesFiltradas = messages.filter(message => user.room == message.room);
+            const messagesFiltradas = messages.filter(message => user.room === message.room);
             setMessages(messagesFiltradas);
          }
       } )

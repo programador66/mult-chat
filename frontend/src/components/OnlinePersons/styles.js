@@ -35,5 +35,15 @@ export const useStyles = makeStyles({
       backgroundColor: '#0e314a',
       borderColor: '#0062cc',
     },
+   },
+   buttomSair: {
+     marginTop: 20,
+     color: '#fff',
+     backgroundColor: '#FF0000',
+     width: '100%',
+     '&:hover': {
+      backgroundColor: '#CC0000',
+      borderColor: '#CC0000',
+    },
    }
 });

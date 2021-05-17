@@ -8,30 +8,56 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-const FinalyRegister = ({user, dispatch}) => {
+import api from '../../services/api';
+
+const FinalyRegister = ({user, dispatch}) => {  
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [data_nascimento, setDataNascimento] = useState("");
 
   const activeInativeModal = (nome,email,data_nascimento) => {
-      return {
-        type: 'SET_USERFINAL',
-        finalyRegister: false
-      }
-  }
-
-  const handleClose = () => {
-    dispatch(activeInativeModal());
-  
-  };
-
-  const handleSaveUser = () => {
-   const user = {
+    return {
+      type: 'SET_USERFINAL',
+      finalyRegister: false,
       nome,
       email,
       data_nascimento
+    }
+  }
+
+const closeModalFinaly = () => {
+  return {
+    type: 'CLOSE_MODALFINALY',
+    finalyRegister: false
+  }
+}
+
+  const handleClose = () => {
+    dispatch(closeModalFinaly());
+  };
+
+  const handleSaveUser = (nickName) => {
+    if (nome === "" || email === "" || data_nascimento === "")
+      return alert("Favor verificar os valores informados!");
+
+   const user = {
+      nickName,
+      name:nome,
+      email,
+      data_aniversario:data_nascimento
    }
-   console.log(user)
+   
+
+   api.setUser(user).then(response => {
+     const data = response.data;
+     if (data.success) {
+      dispatch(activeInativeModal(data.user.name,data.user.email,data.user.data_aniversario));
+      setDataNascimento("");
+      setEmail("");
+      setNome("");
+     }
+   }).catch(e => console.log(e.response));
+
   }
 
   return (
@@ -43,7 +69,7 @@ const FinalyRegister = ({user, dispatch}) => {
             Complete seu cadastro fala começar a conversar!
           </DialogContentText>
           <TextField
-            onChange={(e) => setNome(e.target.value)}
+            onChange={e => setNome(e.target.value)}
             autoFocus
             value={nome}
             margin="dense"
@@ -54,7 +80,7 @@ const FinalyRegister = ({user, dispatch}) => {
           />
 
          <TextField
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={e => setEmail(e.target.value)}
             value={email}
             margin="dense"
             id="name"
@@ -64,7 +90,7 @@ const FinalyRegister = ({user, dispatch}) => {
           />
          <TextField
             style={{marginTop: 8}}
-            onChange={(e) => setDataNascimento(e.target.value)}
+            onChange={e => setDataNascimento(e.target.value)}
             id="date"
             label="Aniversário"
             type="date"
@@ -80,7 +106,7 @@ const FinalyRegister = ({user, dispatch}) => {
           </Button>
           {
             nome.length >= 3 &&
-              <Button onClick={handleSaveUser} color="primary">
+              <Button onClick={() => handleSaveUser(user.nickName)} color="primary">
                 SALVAR
               </Button>
           }

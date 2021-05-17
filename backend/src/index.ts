@@ -3,10 +3,9 @@ import http from 'http';
 import { Socket } from 'socket.io';
 import cors from 'cors';
 import routes from './routes';
+import Message from '../src/Models/Message';
 
 const socketio = require('socket.io');
-
-let messages: any = [];
 
 const app = express();
 app.use(cors());
@@ -15,15 +14,14 @@ const server = http.createServer(app);
 
 const io = socketio(server);
 
-io.on('connection', (socket: Socket) => {
+io.on('connection', async(socket: Socket) => {
 
    console.log(' estabelecendo nova conexão');
-    
+    const messages = await Message.find();
     socket.emit('previousMessages', messages);
 
-   socket.on('sendMessage', (data) => {
-      console.log(data);
-      messages.push(data);
+   socket.on('sendMessage', async(data) => {
+      await Message.create(data);
       io.emit(data.room, data);
    })
 
