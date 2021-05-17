@@ -1,13 +1,13 @@
 import {Request, Response} from 'express';
-import IUsers from '../Interfaces/IUsers';
-
-const users:any = []
+import {UserValidate} from '../RequestValidate/UserValidate';
+import User from '../Models/User';
 
 class UserController {
    
    async getAllUsers(request: Request, response: Response) {
       try {
-         return response.status(200).json({message: 'usuarios'})
+         const users = await User.find();
+         return response.status(200).json({success: true, data: users})
       } catch (error) {
          return response.status(500).json({
             success: false,
@@ -16,20 +16,27 @@ class UserController {
       }
    }
 
-   async create({name, email,data_aniversario} : IUsers) {
-      const cleanName = name.trim();
-      const cleanEmail = email.trim().toLowerCase();
+   async create(request: Request, response: Response) {
+      
+      try {
+         const {nickName,name, email, data_aniversario} = request.body;
+         
+         UserValidate({nickName,name,email, data_aniversario});
+         const existingUser = await User.find({email: email});
+         
+         if (existingUser.length)
+            throw new Error('Usuário ja existente!')
 
-      const existingUser = users.find( (user: IUsers) => user.email === email)
-      
-      if (existingUser) 
-         return {error: 'Usuário ja existe!'}
-      
-      const user = { name: cleanName, email: cleanEmail, data_aniversario};
-      
-      users.push(user);
-      
-      return {user};
+         const user = await User.create({nickName,name,email,data_aniversario});
+         
+         return response.status(201).json({user});    
+         
+      } catch (error) {
+         return response.status(500).json({
+            error: error.message,
+            msg: 'Registration Failed'
+         })   
+      }
    }
 
    async getUsersInRoom () {
