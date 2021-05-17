@@ -5,6 +5,8 @@ import Divider from "@material-ui/core/Divider";
 import Button from "@material-ui/core/Button";
 import {useStyles} from './styles';
 import api from '../../services/api';
+import { ImEnter } from "react-icons/im";
+import {CgLogOut} from "react-icons/cg";
 
 const activeInativeModal = () => {
    return {
@@ -33,7 +35,7 @@ const OnlinePersons = ({user,dispatch}) => {
          finalyRegister: false,
          nome: verify[0].name,
          email:verify[0].email,
-         data_nascimento: verify[0].data_aniversario
+         data_nascimento: verify[0].data_aniversario,
        }
        dispatch(userExisting);
      } else {
@@ -62,6 +64,7 @@ const OnlinePersons = ({user,dispatch}) => {
                className={styles.buttoms}
                onClick={() => verifyIfUserExists()}
             >
+               <ImEnter size={26} style={{ marginRight: 10 }} />
                Entrar no Chat
             </Button>
             : 
@@ -73,9 +76,10 @@ const OnlinePersons = ({user,dispatch}) => {
                   finalyRegister: false,
                   nome:"",
                   email:"",
-                  data_nascimento:""
+                  data_nascimento:"",
                 })}
             >
+               <CgLogOut size={26} style={{ marginRight: 10 }} />
                sair Chat
             </Button>
          }

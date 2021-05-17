@@ -27,7 +27,10 @@ export const useStyles = makeStyles({
       }
    },
    buttoms: {
-      marginTop: 20,
+     display: 'flex',
+     justifyContent: 'center',
+     alignItems: 'center',
+     marginTop: 20,
      color: '#fff',
      backgroundColor: '#0e314a',
      width: '100%',

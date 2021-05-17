@@ -19,5 +19,10 @@ export const useStyles = makeStyles({
          backgroundColor: '#FFF',
       }
    },
+   info: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center'
+   }
 });
 

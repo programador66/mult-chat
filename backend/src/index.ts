@@ -21,8 +21,14 @@ io.on('connection', async(socket: Socket) => {
     socket.emit('previousMessages', messages);
 
    socket.on('sendMessage', async(data) => {
-      await Message.create(data);
-      io.emit(data.room, data);
+     const {createAt} = await Message.create(data);
+
+      io.emit(data.room, {...data,createAt});
+   })
+
+   socket.on('info', async(data) => {
+      console.log(data)
+      io.emit(`${data.room}-info`, data);
    })
 
    socket.on('encerrar', () => console.log('conexão encerrada!'))

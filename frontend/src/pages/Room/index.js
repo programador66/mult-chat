@@ -25,14 +25,25 @@ const Room = ({user, dispatch}) => {
     setSend(message);
     setMessage('');
   }
-  const handleLogout = () => {
-    dispatch({type: 'RESET'});
-    history.goBack();
+  const handleLogout = async() => {
+    await dispatch({type: 'RESET'});
+    
+    setTimeout(() => {
+      history.push("/");
+    },1000)
+    
   }
   useEffect( () => {
     if (user.nickName === "") {
       handleLogout();
-      history.push("/");
+      
+    } else {
+      dispatch({
+        type: 'SET_USER',
+        ativo: false,
+        nickName: user.nickName,
+        loginChat:true
+      });
     }
     
   },[])

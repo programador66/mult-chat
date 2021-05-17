@@ -7,7 +7,7 @@ const inticial_state =
       nickName: "",
       nome: "",
       email: "",
-      chave_unica:"",
+      loginChat:false,
       data_aniversario: "",
       finalyRegister: false,
       room: ""
@@ -20,14 +20,15 @@ function reducer(state = inticial_state , action) {
          ...state,
          ativo: action.ativo,
          nickName: action.nickName,
+         loginChat:action.loginChat || false,
       }
    }else if (action.type === 'SET_USERFINAL') {
       return {
          ...state,
          finalyRegister: action.finalyRegister,
-         nome: action.nome,
-         email: action.email,
-         data_nascimento: action.data_nascimento
+         nome: action.nome || "",
+         email: action.email || "",
+         data_nascimento: action.data_nascimento || "",
       }
    } else if (action.type === 'SET_ROOM') {
       return {
@@ -51,7 +52,8 @@ function reducer(state = inticial_state , action) {
          chave_unica:"",
          data_aniversario: "",
          finalyRegister: false,
-         room: ""
+         room: "",
+         loginChat:false,
       }
    }
    return state
