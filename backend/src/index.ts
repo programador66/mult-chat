@@ -27,7 +27,6 @@ io.on('connection', async(socket: Socket) => {
    })
 
    socket.on('info', async(data) => {
-      console.log(data)
       io.emit(`${data.room}-info`, data);
    })
 
@@ -39,4 +38,4 @@ app.use(routes);
 
 server.listen(3333, () => {
    console.log('🚀🚀🚀🚀🚀🚀🚀🚀 server run on port 3333');
-})
+});
