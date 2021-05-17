@@ -22,7 +22,7 @@ const OnlinePersons = ({user,dispatch}) => {
         const users = response.data.data;
         setUsersBd(users);
      }).catch(e => console.log(e.response));
-  },[])
+  },[user.nome])
 
   const verifyIfUserExists = () => {
      const verify = usersBd.filter(bd => bd.nickName === user.nickName );
@@ -56,7 +56,7 @@ const OnlinePersons = ({user,dispatch}) => {
          </div>
          <Divider orientation="horizontal" style={{marginTop: 30}} />
          {
-            user.email == "" ? 
+            user.email === "" ? 
             <Button 
                variant="contained" 
                className={styles.buttoms}

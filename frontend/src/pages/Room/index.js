@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { connect } from 'react-redux';
 
@@ -15,7 +15,7 @@ import Chat from '../../components/Chat';
 import OnlinePersons from "../../components/OnlinePersons";
 import FinalyRegister from "../../components/FinalyRegister";
 
-const Room = ({user}) => {
+const Room = ({user, dispatch}) => {
   const history = useHistory();
   const styles = useStyles();
   const [message, setMessage] = useState('');
@@ -25,21 +25,34 @@ const Room = ({user}) => {
     setSend(message);
     setMessage('');
   }
+  const handleLogout = () => {
+    dispatch({type: 'RESET'});
+    history.goBack();
+  }
+  useEffect( () => {
+    if (user.nickName === "") {
+      handleLogout();
+      history.push("/");
+    }
+    
+  },[])
+
+
 
   return (
     <Container maxWidth="lg">
       <Container className={styles.header} disableGutters>
         <section className={styles.logo}>
-          <img src={logo} width={115} />
+          <img src={logo} width={115} alt="logo" />
           <strong>Bem vindo ao Web Chat, {user.nickName}</strong>
         </section>
 
         <Button
           variant="outlined"
           style={{ color: "#0e314a" }}
-          onClick={() => history.goBack()}
+          onClick={handleLogout}
         >
-          Voltar ao início
+          Fazer Logout
         </Button>
       </Container>
       <div className={styles.titleRoom}>
@@ -54,6 +67,7 @@ const Room = ({user}) => {
 
         <Container className={styles.bottom}>
           <TextField
+            disabled={user.email === ""? true : false}
             className={styles.textfield}
             id="outlined-multiline-static"
             label="Insira sua mensagem"
@@ -63,7 +77,7 @@ const Room = ({user}) => {
             onChange={e => setMessage(e.target.value) }
             onKeyPress={event => event.key === 'Enter' ? sendMessage() : null }
           />
-          <Button className={styles.buttomSend} variant="contained">
+          <Button className={styles.buttomSend} variant="contained" disabled={user.email === ""? true : false}>
             Send
             <IoMdSend size={30} style={{ marginLeft: 5 }} />
           </Button>

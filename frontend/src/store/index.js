@@ -41,6 +41,18 @@ function reducer(state = inticial_state , action) {
          nome: "",
          email: ""
       }
+   } else if (action.type === 'RESET') {
+      return {
+         ...state,
+         ativo: true,
+         nickName: "",
+         nome: "",
+         email: "",
+         chave_unica:"",
+         data_aniversario: "",
+         finalyRegister: false,
+         room: ""
+      }
    }
    return state
 }

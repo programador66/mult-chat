@@ -33,22 +33,21 @@ const Chat = ({user,messageForSend}) => {
          socket.emit('encerrar');
          socket.off();
       }
-   },[ENDPOINT])
+   },[ENDPOINT,user.room])
 
    useEffect(() => {
-      console.log(user.room)
       socket.on(user.room, (message) => {
          setMessages([...messages,message])
          console.log("message Received")
          console.log(message)
       })
-   },[messages])
+   },[messages,user.room])
 
    useEffect(() => {
-      sedMessageChat();
+      sendMessageChat();
    }, [messageForSend])
 
-   const sedMessageChat = () => {
+   const sendMessageChat = () => {
       if (messageForSend !== '')
       socket.emit('sendMessage', {nickName: user.nickName, room: user.room,msg: messageForSend})
    }
