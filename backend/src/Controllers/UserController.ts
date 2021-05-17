@@ -22,8 +22,8 @@ class UserController {
          const {nickName,name, email, data_aniversario} = request.body;
          
          UserValidate({nickName,name,email, data_aniversario});
-         const existingUser = await User.find({email: email, nickName});
-         
+         const existingUser = await User.find({email: email});
+
          if (existingUser.length)
             throw new Error('Usuário ja existente!')
 
@@ -37,10 +37,6 @@ class UserController {
             msg: 'Registration Failed'
          })   
       }
-   }
-
-   async getUsersInRoom () {
-
    }
 
 }

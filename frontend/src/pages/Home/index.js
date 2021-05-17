@@ -9,8 +9,10 @@ const Home = () => {
     <Container maxWidth="xl" disableGutters>
       <NavBar />
       <Container maxWidth="md">
-          <CardRoom name="sala 1"/>
-          <CardRoom  name="sala 2" />
+          <CardRoom name="SALA VERDE"/>
+          <CardRoom  name="SALA AZUL"/>
+          <CardRoom  name="SALA VERMELHA"/>
+          <CardRoom  name="SALA ROSA"/>
       </Container>
       <InitialRegister />
     </Container>

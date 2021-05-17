@@ -7,13 +7,42 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import { makeStyles } from '@material-ui/core/styles';
 
 import api from '../../services/api';
 
-const FinalyRegister = ({user, dispatch}) => {  
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    '& > * + *': {
+      marginTop: theme.spacing(2),
+    },
+  },
+}));
+
+
+
+const FinalyRegister = ({user, dispatch}) => {
+
+  const classes = useStyles();
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [data_nascimento, setDataNascimento] = useState("");
+
+  const [open, setOpen] = React.useState(false);
+
+  const handleCloseSnack = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpen(false);
+  };
 
   const activeInativeModal = (nome,email,data_nascimento) => {
     return {
@@ -55,8 +84,10 @@ const closeModalFinaly = () => {
       setDataNascimento("");
       setEmail("");
       setNome("");
+      setOpen(true);
+
      }
-   }).catch(e => console.log(e.response));
+   }).catch(e => alert(e.response.data.msg));
 
   }
 
@@ -112,6 +143,15 @@ const closeModalFinaly = () => {
           }
         </DialogActions>
       </Dialog>
+
+      <div className={classes.root}>
+        <Snackbar open={open} autoHideDuration={2000} onClose={handleCloseSnack}>
+          <Alert onClose={handleCloseSnack} severity="success">
+            Bem vindo!
+          </Alert>
+        </Snackbar>
+      </div>
+  
     </div>
   );
 }

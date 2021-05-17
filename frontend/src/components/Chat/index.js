@@ -75,10 +75,10 @@ const Chat = ({user,messageForSend}) => {
       </section>
       ))}
       
-      <seaction className={styles.info}>
+      <section className={styles.info}>
          <strong>{info.nickName}</strong>
          <p>{info.msg}</p>
-      </seaction> 
+      </section> 
    </div>
   )
 }

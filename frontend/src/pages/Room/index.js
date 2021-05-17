@@ -22,6 +22,8 @@ const Room = ({user, dispatch}) => {
   const [send, setSend] = useState('');
 
   const sendMessage = () => {
+    if (message === "") 
+      return 0;
     setSend(message);
     setMessage('');
   }
@@ -88,7 +90,12 @@ const Room = ({user, dispatch}) => {
             onChange={e => setMessage(e.target.value) }
             onKeyPress={event => event.key === 'Enter' ? sendMessage() : null }
           />
-          <Button className={styles.buttomSend} variant="contained" disabled={user.email === ""? true : false}>
+          <Button 
+            className={styles.buttomSend} 
+            variant="contained" 
+            disabled={user.email === ""? true : false}
+            onClick={() => sendMessage()}  
+          >
             Send
             <IoMdSend size={30} style={{ marginLeft: 5 }} />
           </Button>
