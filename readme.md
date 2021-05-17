@@ -45,6 +45,8 @@ Frontend:
 1. Ter o docker e docker compose instalado
 2. executar o comando `docker-compose up -d --build`
 
+frontend : localhost:3000
+
 ## 🔥 Instalação e execução com yarn (Sem Docker)
 
 1. Faça um clone desse repositório;
